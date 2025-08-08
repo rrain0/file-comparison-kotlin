@@ -11,9 +11,13 @@ fun main() {
   //   """E:\from SP PHD U2\test1""",
   //   """E:\from SP PHD U2\test2""",
   // ))
+  // val sources = Sources(listOf(
+  //   """M:\[удалить]\[test]\Fantastic.Beasts.and.Where.to.Find.Them.2016.BDRip.1080p.mkv""",
+  //   """F:\[удалить]\Fantastic.Beasts.and.Where.to.Find.Them.2016.BDRip.1080p.mkv""",
+  // ))
   val sources = Sources(listOf(
-    """M:\[удалить]\[test]\Fantastic.Beasts.and.Where.to.Find.Them.2016.BDRip.1080p.mkv""",
-    """F:\[удалить]\Fantastic.Beasts.and.Where.to.Find.Them.2016.BDRip.1080p.mkv""",
+    """D:\PROG\JAVA old Seagate Expansion Drive 1TB\PROJECTS\VulkanProj""",
+    """E:\[ ] from DATA_TWO [G]\Java Vulkan\VulkanProj""",
   ))
   processFiles(sources, ResultType.RelPathToHashToFileInfo)
 }

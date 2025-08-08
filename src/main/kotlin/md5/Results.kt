@@ -30,13 +30,13 @@ object Results {
       }
   }
   
-  fun printRelPathToHashToFileInfo() {
+  fun printRelPathToHashToFileInfo0() {
     pathToFileInfo
       .values
       .groupBy { info -> info.relPath }
       .entries
       .sortedWith { (relPathA, a), (relPathB, b) ->
-        a.first().relPath.compareTo(b.first().relPath)
+        relPathA.compareTo(relPathB)
           .mapZero { b.size.compareTo(a.size) }
       }
       .map { (relPath, infos) -> relPath to infos.groupBy { info -> info.md5 } }
@@ -46,6 +46,37 @@ object Results {
           println("-- md5: $md5")
           println("-- cnt: ${infos.size}")
           infos.forEach {
+            println("-- -- path: ${it.path}")
+          }
+        }
+        println()
+      }
+  }
+  
+  fun printRelPathToHashToFileInfo() {
+    data class PathGroup<T>(val relPath: String, var cnt: Int, val items: T)
+    data class Md5Group<T>(val md5: String, var cnt: Int, val items: T)
+    pathToFileInfo
+      .values
+      .groupBy { group -> group.relPath }
+      .map { (relPath, infos) -> PathGroup(
+        relPath,
+        infos.size,
+        infos
+          .groupBy { it.md5 ?: "ERROR" }
+          .map { (md5, infos) -> Md5Group(md5, infos.size, infos) }
+      ) }
+      .sortedWith { a, b ->
+        b.cnt.compareTo(a.cnt)
+          .mapZero { a.items.size.compareTo(b.items.size) }
+      }
+      .forEach {
+        println("relPath: ${it.relPath}")
+        println("cnt: ${it.cnt}")
+        it.items.forEach {
+          println("-- md5: ${it.md5}")
+          println("-- cnt: ${it.cnt}")
+          it.items.forEach {
             println("-- -- path: ${it.path}")
           }
         }
