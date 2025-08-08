@@ -8,13 +8,19 @@ import kotlin.io.path.relativeTo
 
 
 fun collectFilesInfo(path: PathString) {
-  collectFilesInfoRecursive(File(path), CurrInfo(path))
+  val result: MutableMap<PathString, FileInfo> = mutableMapOf()
+  collectFilesInfoRecursive(File(path), CurrInfo(path), result)
+  Results.pathToFileInfo += result
 }
 
-private fun collectFilesInfoRecursive(file: File, currInfo: CurrInfo) {
+private fun collectFilesInfoRecursive(
+  file: File,
+  currInfo: CurrInfo,
+  result: MutableMap<PathString, FileInfo>
+) {
   when {
     file.isDirectory -> file.listFiles().forEach {
-      collectFilesInfoRecursive(it, currInfo)
+      collectFilesInfoRecursive(it, currInfo, result)
     }
     file.isFile -> {
       val fileInfo =
@@ -35,10 +41,21 @@ private fun collectFilesInfoRecursive(file: File, currInfo: CurrInfo) {
             isError = true
           )
         }
-      Results.pathToFileInfo[fileInfo.path] = fileInfo
+      result[fileInfo.path] = fileInfo
     }
   }
 }
+
+
+
+data class FileInfo (
+  val path: PathString,
+  val sourcePath: PathString,
+  val relPath: PathString,
+  val isError: Boolean = false,
+  val md5: String? = null,
+)
+
 
 
 data class CurrInfo(

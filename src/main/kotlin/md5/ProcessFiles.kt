@@ -1,10 +1,20 @@
 package com.rrain.md5
 
-import java.io.File
 
 
-
-fun processFiles(sources: Sources) {
+fun processFiles(sources: Sources, resultType: ResultType) {
   sources.list.forEach { collectFilesInfo(it) }
-  Results.printHashInfos()
+  
+  when (resultType) {
+    ResultType.FileInfo -> Results.printFileInfos()
+    ResultType.HashToFileInfo -> Results.printHashToFileInfos()
+    ResultType.RelPathToHashToFileInfo -> Results.printRelPathToHashToFileInfo()
+  }
+}
+
+
+enum class ResultType {
+  FileInfo,
+  HashToFileInfo,
+  RelPathToHashToFileInfo,
 }
