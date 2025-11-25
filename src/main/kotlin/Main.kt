@@ -19,5 +19,10 @@ fun main() {
     """D:\PROG\JAVA old Seagate Expansion Drive 1TB\PROJECTS\VulkanProj""",
     """E:\[ ] from DATA_TWO [G]\Java Vulkan\VulkanProj""",
   ))
-  processFiles(sources, ResultType.RelPathToHashToFileInfo)
+  processFiles(
+    sources,
+    ResultType.HashToFileInfo,
+    console = true,
+    file = "files-info.txt",
+  )
 }

@@ -1,6 +1,7 @@
 package com.rrain.md5
 
 import com.rrain.util.base.number.mapZero
+import java.io.FileWriter
 
 
 
@@ -8,29 +9,50 @@ import com.rrain.util.base.number.mapZero
 object Results {
   val pathToFileInfo: MutableMap<PathString, FileInfo> = mutableMapOf()
   
-  fun printFileInfos() {
+  fun printFileInfos(
+    console: Boolean = false,
+    file: String? = null,
+  ) {
+    val text = StringBuilder()
+    
     pathToFileInfo.forEach { p, info ->
-      println("path: ${info.path}")
-      println("md5: ${if (info.isError) "ERROR" else info.md5}")
-      println()
+      text.appendLine("path: ${info.path}")
+      text.appendLine("md5: ${if (info.isError) "ERROR" else info.md5}")
+      text.appendLine()
     }
+    
+    if (console) print(text.toString())
+    file?.let { name -> FileWriter(name).use { it.write(text.toString()) } }
   }
   
-  fun printHashToFileInfos() {
+  fun printHashToFileInfos(
+    console: Boolean = false,
+    file: String? = null,
+  ) {
+    val text = StringBuilder()
+    
     pathToFileInfo
       .values
       .groupBy { info -> if (info.isError) "ERROR" else info.md5 }
       .entries
       .sortedWith { (aMd5, aInfos), (bMd5, bInfos) -> bInfos.size - aInfos.size  }
       .forEach { (md5, infos) ->
-        println("cnt: ${infos.size}")
-        println("md5: $md5, cnt: ${infos.size}")
-        infos.forEach { println("path: ${it.path}") }
-        println()
+        text.appendLine("cnt: ${infos.size}")
+        text.appendLine("md5: $md5, cnt: ${infos.size}")
+        infos.forEach { text.appendLine("path: ${it.path}") }
+        text.appendLine()
       }
+    
+    if (console) print(text.toString())
+    file?.let { name -> FileWriter(name).use { it.write(text.toString()) } }
   }
   
-  fun printRelPathToHashToFileInfo0() {
+  fun printRelPathToHashToFileInfo0(
+    console: Boolean = false,
+    file: String? = null,
+  ) {
+    val text = StringBuilder()
+    
     pathToFileInfo
       .values
       .groupBy { info -> info.relPath }
@@ -41,21 +63,30 @@ object Results {
       }
       .map { (relPath, infos) -> relPath to infos.groupBy { info -> info.md5 } }
       .forEach { (relPath, md5ToInfos) ->
-        println("relPath: $relPath")
+        text.appendLine("relPath: $relPath")
         md5ToInfos.forEach { (md5, infos) ->
-          println("-- md5: $md5")
-          println("-- cnt: ${infos.size}")
+          text.appendLine("-- md5: $md5")
+          text.appendLine("-- cnt: ${infos.size}")
           infos.forEach {
-            println("-- -- path: ${it.path}")
+            text.appendLine("-- -- path: ${it.path}")
           }
         }
-        println()
+        text.appendLine()
       }
+    
+    if (console) print(text.toString())
+    file?.let { name -> FileWriter(name).use { it.write(text.toString()) } }
   }
   
-  fun printRelPathToHashToFileInfo() {
+  fun printRelPathToHashToFileInfo(
+    console: Boolean = false,
+    file: String? = null,
+  ) {
     data class PathGroup<T>(val relPath: String, var cnt: Int, val items: T)
     data class Md5Group<T>(val md5: String, var cnt: Int, val items: T)
+    
+    val text = StringBuilder()
+    
     pathToFileInfo
       .values
       .groupBy { group -> group.relPath }
@@ -71,16 +102,19 @@ object Results {
           .mapZero { a.items.size.compareTo(b.items.size) }
       }
       .forEach {
-        println("relPath: ${it.relPath}")
-        println("cnt: ${it.cnt}")
+        text.appendLine("relPath: ${it.relPath}")
+        text.appendLine("cnt: ${it.cnt}")
         it.items.forEach {
-          println("-- md5: ${it.md5}")
-          println("-- cnt: ${it.cnt}")
+          text.appendLine("-- md5: ${it.md5}")
+          text.appendLine("-- cnt: ${it.cnt}")
           it.items.forEach {
-            println("-- -- path: ${it.path}")
+            text.appendLine("-- -- path: ${it.path}")
           }
         }
-        println()
+        text.appendLine()
       }
+    
+    if (console) print(text.toString())
+    file?.let { name -> FileWriter(name).use { it.write(text.toString()) } }
   }
 }
