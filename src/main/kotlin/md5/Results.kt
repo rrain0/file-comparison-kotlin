@@ -1,6 +1,6 @@
 package com.rrain.md5
 
-import com.rrain.util.base.number.mapZero
+import com.rrain.util.base.number.ifZero
 import java.io.FileWriter
 
 
@@ -47,37 +47,6 @@ object Results {
     file?.let { name -> FileWriter(name).use { it.write(text.toString()) } }
   }
   
-  fun printRelPathToHashToFileInfo0(
-    console: Boolean = false,
-    file: String? = null,
-  ) {
-    val text = StringBuilder()
-    
-    pathToFileInfo
-      .values
-      .groupBy { info -> info.relPath }
-      .entries
-      .sortedWith { (relPathA, a), (relPathB, b) ->
-        relPathA.compareTo(relPathB)
-          .mapZero { b.size.compareTo(a.size) }
-      }
-      .map { (relPath, infos) -> relPath to infos.groupBy { info -> info.md5 } }
-      .forEach { (relPath, md5ToInfos) ->
-        text.appendLine("relPath: $relPath")
-        md5ToInfos.forEach { (md5, infos) ->
-          text.appendLine("-- md5: $md5")
-          text.appendLine("-- cnt: ${infos.size}")
-          infos.forEach {
-            text.appendLine("-- -- path: ${it.path}")
-          }
-        }
-        text.appendLine()
-      }
-    
-    if (console) print(text.toString())
-    file?.let { name -> FileWriter(name).use { it.write(text.toString()) } }
-  }
-  
   fun printRelPathToHashToFileInfo(
     console: Boolean = false,
     file: String? = null,
@@ -99,7 +68,7 @@ object Results {
       ) }
       .sortedWith { a, b ->
         b.cnt.compareTo(a.cnt)
-          .mapZero { a.items.size.compareTo(b.items.size) }
+          .ifZero { a.items.size.compareTo(b.items.size) }
       }
       .forEach {
         text.appendLine("relPath: ${it.relPath}")

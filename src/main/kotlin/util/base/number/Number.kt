@@ -2,4 +2,6 @@ package com.rrain.util.base.number
 
 
 
-inline fun Int.mapZero(block: () -> Int): Int = if (this == 0) block() else this
+inline infix fun Int.ifZero(block: () -> Int): Int {
+  return if (this == 0) block() else this
+}
