@@ -13,7 +13,7 @@ fun main() {
   ))
   processFiles(
     sources,
-    ResultType.HashToFileInfo,
+    ResultType.RelPathToHashesByCntDescToFileInfosByCntAsc,
     console = true,
     file = "files-info.txt",
   )

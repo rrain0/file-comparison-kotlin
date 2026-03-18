@@ -25,7 +25,7 @@ object Results {
     file?.let { name -> FileWriter(name).use { it.write(text.toString()) } }
   }
   
-  fun printHashToFileInfos(
+  fun printHashToFileInfosByCntDesc(
     console: Boolean = false,
     file: String? = null,
   ) {
@@ -35,7 +35,7 @@ object Results {
       .values
       .groupBy { info -> if (info.isError) "ERROR" else info.md5 }
       .entries
-      .sortedWith { (aMd5, aInfos), (bMd5, bInfos) -> bInfos.size - aInfos.size  }
+      .sortedWith { (aMd5, aInfos), (bMd5, bInfos) -> bInfos.size.compareTo(aInfos.size)  }
       .forEach { (md5, infos) ->
         text.appendLine("cnt: ${infos.size}")
         text.appendLine("md5: $md5, cnt: ${infos.size}")
@@ -47,7 +47,7 @@ object Results {
     file?.let { name -> FileWriter(name).use { it.write(text.toString()) } }
   }
   
-  fun printRelPathToHashToFileInfo(
+  fun printRelPathToHashesByCntDescToFileInfosByCntAsc(
     console: Boolean = false,
     file: String? = null,
   ) {

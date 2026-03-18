@@ -14,14 +14,14 @@ fun processFiles(
   // Обработать и вывести инфу о файлах
   when (resultType) {
     ResultType.FileInfo -> Results.printFileInfos(console, file)
-    ResultType.HashToFileInfo -> Results.printHashToFileInfos(console, file)
-    ResultType.RelPathToHashToFileInfo -> Results.printRelPathToHashToFileInfo(console, file)
+    ResultType.HashToFileInfosByCntDesc -> Results.printHashToFileInfosByCntDesc(console, file)
+    ResultType.RelPathToHashesByCntDescToFileInfosByCntAsc -> Results.printRelPathToHashesByCntDescToFileInfosByCntAsc(console, file)
   }
 }
 
 
 enum class ResultType {
   FileInfo,
-  HashToFileInfo,
-  RelPathToHashToFileInfo,
+  HashToFileInfosByCntDesc,
+  RelPathToHashesByCntDescToFileInfosByCntAsc,
 }
