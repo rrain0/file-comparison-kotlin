@@ -11,7 +11,7 @@ object Results {
   
   fun printFileInfos(
     console: Boolean = false,
-    file: String? = null,
+    fileName: String? = null,
   ) {
     val text = StringBuilder()
     
@@ -22,12 +22,12 @@ object Results {
     }
     
     if (console) print(text.toString())
-    file?.let { name -> FileWriter(name).use { it.write(text.toString()) } }
+    fileName?.let { name -> FileWriter(name).use { it.write(text.toString()) } }
   }
   
   fun printHashToFileInfosByCntDesc(
     console: Boolean = false,
-    file: String? = null,
+    fileName: String? = null,
   ) {
     val text = StringBuilder()
     
@@ -44,12 +44,12 @@ object Results {
       }
     
     if (console) print(text.toString())
-    file?.let { name -> FileWriter(name).use { it.write(text.toString()) } }
+    fileName?.let { name -> FileWriter(name).use { it.write(text.toString()) } }
   }
   
   fun printRelPathToHashesByCntDescToFileInfosByCntAsc(
     console: Boolean = false,
-    file: String? = null,
+    fileName: String? = null,
   ) {
     data class PathGroup<T>(val relPath: String, var cnt: Int, val items: T)
     data class Md5Group<T>(val md5: String, var cnt: Int, val items: T)
@@ -84,6 +84,6 @@ object Results {
       }
     
     if (console) print(text.toString())
-    file?.let { name -> FileWriter(name).use { it.write(text.toString()) } }
+    fileName?.let { name -> FileWriter(name).use { it.write(text.toString()) } }
   }
 }
